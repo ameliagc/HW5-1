@@ -23,13 +23,23 @@ app.config['SECRET_KEY'] = 'hardtoguessstringfromsi364(thisisnotsupersecure)'
 
 ## TODO: Create database and change the SQLAlchemy Database URI.
 ## Your Postgres database should be your uniqname, plus HW5, e.g. "jczettaHW5" or "maupandeHW5"
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://localhost/hw5_364"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://localhost/ameliagcHW5"
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # TODO: Add configuration specifications so that email can be sent from this application, like the examples you saw in the textbook and in class. Make sure you've installed the correct library with pip! See textbook.
 # NOTE: Make sure that you DO NOT write your actual email password in text!!!!
 # NOTE: You will need to use a gmail account to follow the examples in the textbook, and you can create one of those for free, if you want. In THIS application, you should use the username and password from the environment variables, as directed in the textbook. So when WE run your app, we will be using OUR email, not yours.
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587 #default
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('ameliagc364') # TODO export to your environs -- may want a new account just for this. It's expecting gmail, not umich
+app.config['MAIL_PASSWORD'] = os.environ.get('aiisitsf')
+app.config['MAIL_SUBJECT_PREFIX'] = '[Songs App]'
+app.config['MAIL_SENDER'] = 'Admin <youremail@example.com>' # TODO fill in email
+app.config['ADMIN'] = os.environ.get('ADMIN') or "Admin <ameliagc@umich.edu>"
+app.config['HEROKU_ON'] = os.environ.get('HEROKU')
+
 
 # Set up Flask debug stuff
 manager = Manager(app)
@@ -93,6 +103,7 @@ class Hashtag(db.Model):
 class TweetForm(FlaskForm):
     text = StringField("What is the text of your tweet? Please separate all hashtags with commas in this case. e.g. 'Yay Python #python, #programming, #awesome' ", validators=[Required()])
     username = StringField("What is your Twitter username?",validators=[Required()])
+    email = StringField("what is your email?")
     submit = SubmitField('Submit')
 
 
