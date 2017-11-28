@@ -33,11 +33,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 587 #default
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('ameliagc364') # TODO export to your environs -- may want a new account just for this. It's expecting gmail, not umich
-app.config['MAIL_PASSWORD'] = os.environ.get('aiisitsf')
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_SUBJECT_PREFIX'] = '[Songs App]'
-app.config['MAIL_SENDER'] = 'Admin <youremail@example.com>' # TODO fill in email
-app.config['ADMIN'] = os.environ.get('ADMIN') or "Admin <ameliagc@umich.edu>"
+app.config['MAIL_SENDER'] = 'Admin <ameliagc364@gmail.com>' # TODO fill in email
+app.config['ADMIN'] = os.environ.get('ADMIN') or "Admin <ameliagc364@gmail.com>"
 app.config['HEROKU_ON'] = os.environ.get('HEROKU')
 
 
@@ -178,6 +178,9 @@ def index():
         if db.session.query(Tweet).filter_by(text=form.text.data, user_id= (get_or_create_user(db.session, form.username.data).id)).first():
             flash("You've already saved that tweet by this user!")
         get_or_create_tweet(db.session, form.text.data, form.username.data)
+        if app.config['ADMIN']:
+                send_email(app.config['ADMIN'], 'New Tweet',
+                           'mail/new_tweet', tweet=form.text.data)
         return redirect(url_for('see_all_tweets'))
     return render_template('index.html', form=form,num_tweets=num_tweets)
 
