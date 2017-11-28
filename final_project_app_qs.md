@@ -20,13 +20,13 @@ The form will only need 2 fields, since the archive API only takes the month and
 The data is used to return a list of titles. From there, the user will select the article they want to view. This will be stored in a temporary variable used to call the articles API that will display the text. 
 
 * **What models will you have in your application?**
-I will need a model for article title and date and one for article title and text that the user saves.
+I will need a model for article title and date and one for article title and text that the user saves. I will also need a model for the user login credentials.
 
 * **What fields will each model have?**
-Both will have two fields each for strings of the title and either date or text.
+All will have two fields each for strings of the title and either date or text, and the username/password.
 
 * **What uniqueness constraints will there be on each table? (e.g. can't add a song with the same title as an existing song)**
-The table with the article title and text can only have 1 entry per article, meaning that the user can only save an article one time.
+The table with the article title and text can only have 1 entry per article, meaning that the user can only save an article one time. The user table can only have 1 password per username.
 
 * **What relationships will exist between the tables? What's a 1:many relationship between? What about a many:many relationship?**
 The one to many relationship will be the all of the articles in a given month and year. There is a many-to-many relationship between keywords and articles, since articles have many keywords and one keyword can be used on multiple articles. 
